@@ -1,6 +1,7 @@
 import { RegisterFormData } from './pages/Register';
 import SignInFormData from "./pages/SignIn"
-//const API_URI = import.meta.env.VITE_API_URL;
+import {HotelType} from "./forms/tpes.ts";
+const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
 export const register = async (formData: RegisterFormData) => {
   try {
@@ -32,18 +33,6 @@ export const register = async (formData: RegisterFormData) => {
     throw error; // Re-throw the error for further handling
   }
 };
-/*
-export const validateToken = async()=>{
-  const API_URI=import.meta.env.VITE_API_URL;
-  const res=await fetch(`${API_URI}/api/auth/validate-token`,{
-    
-    credentials:"include"
-  });
-  if(!res.ok){
-    throw new Error("Invalid Token");
-  }
-};
-*/
 export const signIn=async(formData:SignInFormData)=>{
    const Api=import.meta.env.VITE_API_URL || '';
    const res=await fetch(`${Api}/api/auth/login`,{
@@ -81,9 +70,45 @@ export const signOut=async()=>{
   if(!res.ok){
     throw new Error("Error during Logout");
   }
+};
+
+export const addMyHotel = async (hotelFormData: FormData) => {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000); // 60 seconds timeout
+  
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/my-hotels`, {
+      method: "POST",
+      credentials: "include",
+      body: hotelFormData,
+      signal: controller.signal, // attach signal for timeout
+    });
+
+    if (!response.ok) {
+      const errorMessage = await response.text(); // Get error message from server response
+      throw new Error(`Failed to add hotel: ${errorMessage}`);
+    }
+
+    return await response.json(); // return the parsed JSON response
+
+  } catch (error: any) {
+    if (error.name === 'AbortError') {
+      throw new Error("Request timed out");
+    } else {
+      throw new Error(error.message || "An unknown error occurred");
+    }
+  } finally {
+    clearTimeout(timeoutId); // clear the timeout once the request is finished
+  }
+};
+
+
+export const fetchMyHotels=async():Promise<HotelType[]>=>{
+  const res=await fetch(`${API_BASE_URL}/api/my-hotels`,{
+    credentials:"include",
+  });
+  if(!res.ok){
+    throw new Error("Error Occured")
+  }
+  return res.json();
 }
-
-
-
-
-

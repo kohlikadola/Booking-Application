@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 const verifyToken=(req,res,next)=>{
+  req.setTimeout(60000);
   //auth-token from cookie
   const token=req.cookies["auth-token"];
   if(!token){
