@@ -5,6 +5,8 @@ import Hotel from "../models/hotels.js";
 import verifyToken from "../middleware/auth.js";
 import { body } from "express-validator";
 
+
+
 const router = express.Router();
 const storage = multer.memoryStorage();
 const upload = multer({
@@ -13,6 +15,8 @@ const upload = multer({
     fileSize: 5 * 1024 * 1024, // 5MB
   }
 });
+
+
 
 router.post(
   "/",
@@ -54,6 +58,9 @@ router.post(
     }
   }
 );
+
+
+
 router.get('/',verifyToken,async(req,res)=>{
   try{const hotel=await Hotel.find({userId:req.userId});
   res.json(hotel);
@@ -62,6 +69,57 @@ router.get('/',verifyToken,async(req,res)=>{
     res.status(500).json({message:"Error in Fetching"});
   }
 });
+router.get('/:id',verifyToken,async(req,res)=>{
+  try{
+    const hotel=await Hotel.findOne({
+      _id:req.params.id,
+      userId:req.userId
+    });
+    if(!hotel){
+      res.status(404).json({message:"Absent Record"});
+    }
+    res.status(200).json(hotel);
+  }catch(e){
+    console.log(e);
+    res.status(500).json({message:"Something went wrong"});
+  }
+});
+
+
+
+
+//Update an existing hotel
+router.put('/:id',verifyToken,upload.array("imageFiles"),async(req,res)=>{
+  try{
+    const newhotel=req.body;
+    newhotel.lastUpdated=new Date();
+    const hotel=await Hotel.findOneAndUpdate({
+      _id:req.params.id,
+      userId:req.userId
+    },
+      newhotel,
+      {
+        new:true
+      }
+    );
+    if(!hotel){
+      res.staus(404).json({message:"Absent Entry"});
+    }
+    const files=req.files;
+    const updatedfiles=await uploadImages(files);
+    hotel.imageUrls=[
+      ...updatedfiles,
+      ...(newhotel.imageUrls || [])
+    ];
+    await hotel.save();
+    res.status(201).json(hotel);
+  }catch(e){
+    console.log(e);
+    res.status(500).json({message:"Something went wrong"});
+  }
+});
+
+
 
 async function uploadImages(imageFiles) {
   const uploadPromises = imageFiles.map(async (image) => {

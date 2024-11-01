@@ -111,4 +111,27 @@ export const fetchMyHotels=async():Promise<HotelType[]>=>{
     throw new Error("Error Occured")
   }
   return res.json();
+};
+
+export const fetchMyHotelsById=async(hotelId:string):Promise<HotelType>=>{
+  const res=await fetch(`${API_BASE_URL}/api/my-hotels/${hotelId}`,{
+    credentials:"include",
+  });
+  if(!res.ok){
+    throw new Error("Error Occured");
+  }
+  return res.json();
+};
+
+
+export const updateMyHotelsById=async(hotelFormData:FormData)=>{
+  const res=await fetch(`${API_BASE_URL}/api/my-hotels/${hotelFormData.get("hotelId")}`,{
+    method:"PUT",
+    body:hotelFormData,
+    credentials:"include"
+  });
+  if(!res.ok){
+    throw new Error("Error Occured");
+  }
+    return res.json();
 }
