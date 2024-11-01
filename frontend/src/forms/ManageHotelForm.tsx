@@ -6,7 +6,7 @@ import GuestsSection from "./G";
 import ImagesSection from "./I";
 import { HotelType } from "types";
 import { useEffect } from "react";
-
+import {useNavigate} from "react-router-dom";
 export type HotelFormData = {
   name: string;
   city: string;
@@ -24,19 +24,20 @@ export type HotelFormData = {
 
 type Props = {
   hotel?: HotelType;
-  onSave: (hotelFormData: FormData) => void;
+  onSave: (hotelFormData: FormData) => Promise<void>;
   isLoading: boolean;
 };
 
 const ManageHotelForm = ({ onSave, isLoading, hotel }: Props) => {
   const formMethods = useForm<HotelFormData>();
   const { handleSubmit, reset } = formMethods;
+  const navigate=useNavigate();
 
   useEffect(() => {
     reset(hotel);
   }, [hotel, reset]);
 
-  const onSubmit = handleSubmit((formDataJson: HotelFormData) => {
+  const onSubmit = handleSubmit(async(formDataJson: HotelFormData) => {
     const formData = new FormData();
     if (hotel) {
       formData.append("hotelId", hotel._id);
@@ -65,7 +66,8 @@ const ManageHotelForm = ({ onSave, isLoading, hotel }: Props) => {
       formData.append(`imageFiles`, imageFile);
     });
 
-    onSave(formData);
+    await onSave(formData);
+    navigate("/my-hotels");
   });
 
   return (
