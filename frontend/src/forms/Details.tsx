@@ -57,6 +57,13 @@ const Details=()=>{
         )}
       </label>
       <label className="text-gray-700 text-sm font-bold max-w-[50%]">
+      Rooms
+      <input type="number" min={1} className="border rounded w-full px-2 py-1 font-normal" {...register("rooms", { required: "This field is required" })}></input>
+      {errors.rooms && (
+          <span className="text-red-500">{errors.rooms.message}</span>
+        )}
+      </label>
+      <label className="text-gray-700 text-sm font-bold max-w-[50%]">
         Star Rating
         <select
           {...register("starRating", {

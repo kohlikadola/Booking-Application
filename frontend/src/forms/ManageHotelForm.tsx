@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import {useNavigate} from "react-router-dom";
 export type HotelFormData = {
   name: string;
+  rooms:number;
   city: string;
   country: string;
   description: string;
@@ -43,6 +44,7 @@ const ManageHotelForm = ({ onSave, isLoading, hotel }: Props) => {
       formData.append("hotelId", hotel._id);
     }
     formData.append("name", formDataJson.name);
+    formData.append("rooms",formDataJson.rooms.toString());
     formData.append("city", formDataJson.city);
     formData.append("country", formDataJson.country);
     formData.append("description", formDataJson.description);

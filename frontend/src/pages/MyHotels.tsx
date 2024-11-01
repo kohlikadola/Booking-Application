@@ -4,8 +4,8 @@ import * as apiClient from "../api-client";
 
 
 
-import { BsBuilding, BsMap } from "react-icons/bs";
-import { BiHotel, BiMoney, BiStar } from "react-icons/bi";
+import { BsBuilding, BsMap,BsHouse } from "react-icons/bs";
+import { BiHotel, BiMoney, BiStar,BiBed } from "react-icons/bi";
 const MyHotels = () => {
   const {data:hotelData}=useQuery("fetchMyHotels",apiClient.fetchMyHotels,{
 onError:()=>{
@@ -28,10 +28,14 @@ onError:()=>{
       <div className="flex flex-col justify-between border border-slate-300 rounded-lg p-8 gap-5">
           <h2 className="text-2xl font-bold">{hotel.name}</h2>
           <div className="whitespace-pre-line overflow-auto ">{hotel.description}</div>
-          <div className="grid grid-cols-5 gap-2">
+          <div className="grid grid-cols-6 gap-2">
               <div className="border border-slate-300 rounded-sm p-3 flex items-center">
                 <BsMap className="mr-1" />
                 {hotel.city}, {hotel.country}
+              </div>
+              <div className="border border-slate-300 rounded-sm p-3 flex items-center">
+                 <BiBed className="mr-1" /> {/* Use an appropriate icon for rooms, like BsHouse */}
+                {hotel.rooms} 
               </div>
               <div className="border border-slate-300 rounded-sm p-3 flex items-center">
                 <BsBuilding className="mr-1" />

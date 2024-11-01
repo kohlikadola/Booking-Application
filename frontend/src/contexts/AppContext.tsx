@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import {useQuery} from 'react-query';
+import { useQuery } from 'react-query';
 import Toast from "../components/Toast";
 import * as apiClient from "../api-client";
 
@@ -10,28 +10,35 @@ type ToastMessage = {
 
 type AppContextType = {
   showToast: (toastMessage: ToastMessage) => void;
-  isLog:boolean,
+  isLog: boolean;
+  logOut: () => void;
 };
 
 const AppContext = React.createContext<AppContextType | undefined>(undefined);
 
 export const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
+  const [isLog, setIsLog] = useState(true);
+  const [toast, setToast] = useState<ToastMessage | undefined>(undefined);
+  
+  const { isError } = useQuery("validateToken", apiClient.validateToken, {
+    retry: false,
+  });
+
   const showToast = (toastMessage: ToastMessage) => {
-    console.log(toastMessage);
+    setToast(toastMessage);
   };
-  const [toast,setToast]=useState<ToastMessage|undefined>(undefined);
-  const {isError} = useQuery("validateToken",apiClient.validateToken,{
-  retry:false,
-      })
+
+  const logOut = () => {
+    setIsLog(false);
+  };
+
   return (
     <AppContext.Provider value={{ 
-showToast:(toastMessage)=>{
- setToast(toastMessage);
-},
-isLog:!isError,
-    }}
-    >
-    {toast && <Toast message={toast.message} type={toast.type} onClose={()=>setToast(undefined)} />}
+      showToast,
+      isLog: !isError,
+      logOut,
+    }}>
+      {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(undefined)} />}
       {children}
     </AppContext.Provider>
   );

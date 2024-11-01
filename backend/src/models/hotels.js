@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 const bookingSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
+  bookedrooms:{type:Number,required:true},
   email: { type: String, required: true },
   adultCount: { type: Number, required: true },
   childCount: { type: Number, required: true },
@@ -14,6 +15,7 @@ const bookingSchema = new mongoose.Schema({
 const hotelSchema = new mongoose.Schema({
   userId: { type: String, required: true },
   name: { type: String, required: true },
+  rooms:{type:Number,required:true},
   city: { type: String, required: true },
   country: { type: String, required: true },
   description: { type: String, required: true },

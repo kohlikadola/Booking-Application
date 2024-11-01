@@ -23,6 +23,7 @@ router.post(
   verifyToken,
   [
     body("name").notEmpty().withMessage("Name is required"),
+    body("rooms").notEmpty().isNumeric().withMessage("Room is required"),
     body("city").notEmpty().withMessage("City is required"),
     body("country").notEmpty().withMessage("Country is required"),
     body("description").notEmpty().withMessage("Description is required"),
