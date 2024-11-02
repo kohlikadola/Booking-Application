@@ -5,6 +5,7 @@ import SignIn from "./pages/SignIn.tsx";
 import AddHotel from "./pages/AddHotel.tsx";
 import MyHotels from "./pages/MyHotels.tsx";
 import E from "./pages/EditHotel.tsx";
+import Search from "./pages/SearchPage.tsx";
 import {useAppContext} from "./contexts/AppContext"; 
 const App = () => {
   const {isLog}=useAppContext();
@@ -12,8 +13,9 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Layout className="text-4xl"><p>Home Page</p></Layout>} />
-        <Route path="/search" element={<Layout className="text-4xl"><p>Search Page</p></Layout>} />
+
         <Route path="/register" element={<Layout><Register /></Layout>} />
+        <Route path="/search" element={<Layout><Search /></Layout>} />
         <Route path="/login" element={<Layout ><SignIn /></Layout>} />
         {isLog && (
         <>

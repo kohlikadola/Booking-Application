@@ -1,8 +1,7 @@
 import React, { useContext, useState } from "react";
-import { useQuery } from 'react-query';
 import Toast from "../components/Toast";
+import { useQuery } from "react-query";
 import * as apiClient from "../api-client";
-
 type ToastMessage = {
   message: string;
   type: "SUCCESS" | "ERROR";
@@ -17,19 +16,23 @@ type AppContextType = {
 const AppContext = React.createContext<AppContextType | undefined>(undefined);
 
 export const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
+
   const [isLog, setIsLog] = useState(true);
   const [toast, setToast] = useState<ToastMessage | undefined>(undefined);
   
-  const { isError } = useQuery("validateToken", apiClient.validateToken, {
+ const { isError } = useQuery("validateToken", apiClient.validateToken, {
     retry: false,
+    onError: (error) => {
+         },
   });
+
 
   const showToast = (toastMessage: ToastMessage) => {
     setToast(toastMessage);
   };
 
-  const logOut = () => {
-    setIsLog(false);
+ const logOut = () => {
+    showToast({ message: "Logged out successfully", type: "SUCCESS" }); // Notify user upon logout
   };
 
   return (

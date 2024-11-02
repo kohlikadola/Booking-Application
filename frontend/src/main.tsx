@@ -4,7 +4,7 @@ import App from "./App.tsx";
 import "./index.css";
 import {QueryClient,QueryClientProvider} from 'react-query';
 import { AppContextProvider } from './contexts/AppContext';
-
+import {SearchContextProvider} from './contexts/SearchContext';
 const Query=new QueryClient({
 defaultOptions:{
 queries:{
@@ -17,7 +17,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
   <QueryClientProvider client={Query}>
   <AppContextProvider>
+  <SearchContextProvider>
     <App />
+  </SearchContextProvider>
     </AppContextProvider>
     </QueryClientProvider>
   </React.StrictMode>,

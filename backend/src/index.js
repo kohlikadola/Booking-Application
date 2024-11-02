@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import userRoutes from './routes/users.js';
 import authRoutes from './routes/auth.js';
 import myHotelRoutes from './routes/my-hotels.js';
+import SearchRoutes from './routes/hotels.js';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import fs from 'fs';
@@ -33,14 +34,10 @@ const connectDB = async () => {
     console.log("MongoDB connected successfully");
   } catch (error) {
     console.error("MongoDB connection error:", error);
-    process.exit(1); // Exit the process with failure
+    process.exit(1); 
   }
 };
-
-// Call the connectDB function
 connectDB();
-
-//mongoose.connect(process.env.MONGO_URI)
 //Filter  Json req's
 app.use(express.json());/*JSON Body Parser*/
 app.use(express.urlencoded({extended:true}));
@@ -62,6 +59,10 @@ app.use(express.static(path.join(__dirname,"../../frontend/dist")));
 app.use("/api/users",userRoutes);
 app.use("/api/auth",authRoutes);
 app.use("/api/my-hotels",myHotelRoutes);
+app.use("/api/hotels",SearchRoutes);
+app.get('*',(req,res)=>{
+  res.sendFile(path.join(__dirname,"../../frontend/dist/index.html"));
+});
 /*--------------*/
 //Server Listener
 app.listen(PORT,()=>{
