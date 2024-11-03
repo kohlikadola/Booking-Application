@@ -43,6 +43,34 @@ router.get("/search", async (req, res) => {
     res.status(500).json({ message: "Something went wrong" });
   }
 });
+router.get("/", async (req, res) => {
+  try {
+    const hotels = await Hotel.find().sort("-lastUpdated");
+    res.json(hotels);
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json({ message: "Error fetching hotels" });
+  }
+});
+router.get("/:id",[
+  param("id").notEmpty().withMessage("Hotel Id is Required")
+],async(req,res)=>{
+  const err=validationResult(req);
+  if(!err.isEmpty()){
+    return res.status(400).json({errors:err.array()});
+    
+  }
+  const id=req.params.id
+  try{
+    const hotel=await Hotel.findById(id);
+    res.status(200).json(hotel);
+  }catch(e){
+    console.log(e);
+    res.status(500).json({message:"Something went wrong"});
+  }
+});
+
+
 const constructSearchQuery = (queryParams) => {
   let constructedQuery = {};
 
@@ -52,19 +80,17 @@ const constructSearchQuery = (queryParams) => {
       { country: new RegExp(queryParams.destination, "i") },
     ];
   }
-
-  if (queryParams.adultCount) {
+    if (queryParams.adultCount) {
     constructedQuery.adultCount = {
       $gte: parseInt(queryParams.adultCount),
     };
   }
 
-  if (queryParams.childCount) {
+  /*if (queryParams.childCount) {
     constructedQuery.childCount = {
       $gte: parseInt(queryParams.childCount),
     };
-  }
-
+  }*/
   if (queryParams.facilities) {
     constructedQuery.facilities = {
       $all: Array.isArray(queryParams.facilities)

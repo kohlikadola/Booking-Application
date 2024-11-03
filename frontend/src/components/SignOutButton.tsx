@@ -8,7 +8,8 @@ const SignOutButton=()=>{
   const mutation = useMutation(apiClinet.signOut,{
 onSuccess:()=>{
 showToast({message:"Signed Out!",type:"SUCCESS"});
-navigate("/login");
+
+window.location.reload();
 },
 onError:(error:Error)=>{
 showToast({message:error.message,type:"ERROR"});

@@ -109,7 +109,7 @@ const SearchPage = () => {
           </select>
         </div>
         {hotelData?.data.map((hotel) => (
-          <SearchResultCard key={hotel.id}  hotel={hotel} />
+          <SearchResultCard key={hotel.id || `${hotel.name}-${hotel.index}`}  hotel={hotel} />
         ))}
         <div><Pagination page={hotelData?.pagination.page || 1} pages={hotelData?.pagination.pages || 1 }  onPageChange={(page)=>setPage(page)} /></div>
       </div>
