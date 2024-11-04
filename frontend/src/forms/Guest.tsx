@@ -42,7 +42,7 @@ const Guest=({hotelId,pricePerNight}:Props)=>{
     navigate("/sign-in", { state: { from: location } });
   };
 
-  const onSubmit = (data: GuestInfoFormData) => {
+  const onSubmit = (data: FormData) => {
     search.saveSearchValues(
       "",
       data.checkIn,
