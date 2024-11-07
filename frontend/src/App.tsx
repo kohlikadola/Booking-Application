@@ -4,6 +4,7 @@ import Register from "./pages/Register.tsx";
 import SignIn from "./pages/SignIn.tsx";
 import AddHotel from "./pages/AddHotel.tsx";
 import MyHotels from "./pages/MyHotels.tsx";
+import B  from './pages/Booking.tsx';
 import E from "./pages/EditHotel.tsx";
 import D from "./pages/Details.tsx";
 import Search from "./pages/SearchPage.tsx";
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/detail/:hotelId" element={<Layout><D /></Layout>} />
         {isLog && (
         <>
+            <Route path="/hotel/:hotelId/booking" element={ <Layout><B /></Layout>} />
             <Route path="/add-hotel" element={ <Layout><AddHotel /></Layout>} />
             <Route path="/my-hotels" element={ <Layout><MyHotels /></Layout>} />
             <Route path="/edit-hotel/:hotelId" element={<Layout><E /></Layout>} />

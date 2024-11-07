@@ -11,7 +11,7 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import {v2 as cloudinary} from 'cloudinary';
-
+import {initRoutine} from './scheduler.js';
 import multer from 'multer';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -63,7 +63,9 @@ app.use("/api/hotels",SearchRoutes);
 app.get('*',(req,res)=>{
   res.sendFile(path.join(__dirname,"../../frontend/dist/index.html"));
 });
-/*--------------*/
+/*-------Cron--Jobs--Init------*/
+initRoutine();
+/*-----------------------------*/
 //Server Listener
 app.listen(PORT,()=>{
   console.log(`Server is Up at ${PORT} and DB is connected`);

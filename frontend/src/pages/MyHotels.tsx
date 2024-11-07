@@ -20,7 +20,7 @@ onError:()=>{
       <span className="flex justify-between">
         <h1 className="text-3xl font-bold">My Hotels</h1>
         <Link to="/add-hotel" className="flex bg-blue-600 text-white text-xl font-bold p-2 rounded hover:bg-blue-500">
-          Add Hotel
+          ADD Hotel
         </Link>
       </span>
       <div className="grid grid-cols-1 gap-8">
@@ -42,7 +42,7 @@ onError:()=>{
                 {hotel.type}
               </div>
               <div className="border border-slate-300 rounded-sm p-3 flex items-center">
-                <BiMoney className="mr-1" />£{hotel.pricePerNight} per night
+                <BiMoney className="mr-1" />₹{hotel.pricePerNight} per night
               </div>
               <div className="border border-slate-300 rounded-sm p-3 flex items-center">
                 <BiHotel className="mr-1" />

@@ -1,8 +1,18 @@
 import { RegisterFormData } from './pages/Register';
 import SignInFormData from "./pages/SignIn"
-import {HotelType,HotelSearchResponse} from "./forms/tpes.ts";
+import {HotelType,HotelSearchResponse,UserType,PaymentIntentResponse} from "./forms/tpes.ts";
 const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
+
+export const fetchCurrentUser=async():Promise<UserType>=>{
+  const res=await fetch(`${API_BASE_URL}/api/users/me`,{
+    credentials:"include",
+  });
+  if(!res.ok){
+    throw new Error("ERRRRR");
+  }
+  return res.json();
+};
 export const register = async (formData: RegisterFormData) => {
   try {
     const Api=import.meta.env.VITE_API_URL || '';
@@ -191,4 +201,17 @@ export const fetchHotelById = async (hotelId: string): Promise<HotelType> => {
 
   return response.json();
 };
-
+export const createPaymentIntent=async(hotelId:string,nights:string,kamre:string):Promise<PaymentIntentResponse>=>{
+  const res=await fetch(`${API_BASE_URL}/api/hotels/${hotelId}/bookings/payment-intent`,{
+    credentials:"include",
+    method:"POST",
+    body:JSON.stringify({nights,kamre}),
+    headers:{
+      "Content-Type":"application/json", 
+    }
+  });
+  if(!res.ok){
+    throw new Error("ERRRRRRRRRRRRRR");
+  }
+  return res.json();
+};

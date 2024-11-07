@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import * as apiClient from "./../api-client";
 import { AiFillStar } from "react-icons/ai";
 import G from '../forms/Guest.tsx'
-//..import GuestInfoForm from "../forms/GuestInfoForm/GuestInfoForm";
+
 
 const Detail = () => {
   const { hotelId } = useParams();
